@@ -1,7 +1,5 @@
 use v6.c;
 
-sub is-container(\it) is export { it.VAR.^name ne it.^name }
-
 role Hash::Agnostic:ver<0.0.1>:auth<cpan:ELIZABETH>
   does Associative  # .AT-KEY and friends
   does Iterable     # .iterator, basically
@@ -32,21 +30,49 @@ role Hash::Agnostic:ver<0.0.1>:auth<cpan:ELIZABETH>
         }
     }
 
-#--- Positional methods that *MAY* be implemented by the consumer --------------
+#--- Associative methods that *MAY* be implemented by the consumer -------------
     method CLEAR() {
         self.DELETE-KEY($_) for self.keys;
     }
 
-    method ASSIGN-KEY(int $pos, \value) is raw {
-        self.AT-KEY($pos) = value;
+    method ASSIGN-KEY($key, \value) is raw {
+        self.AT-KEY($key) = value;
     }
 
     method STORE(*@values, :$initialize) {
         self.CLEAR;
-        for @values {
-            self.ASSIGN-KEY($_,@values.AT-KEY($_));
-        }
+        self!STORE(@values);
         self
+    }
+
+    method !STORE(@values --> Int:D) {
+        my $last := Mu;
+        my int $found;
+
+        for @values {
+            if $_ ~~ Pair {
+                self.ASSIGN-KEY(.key, .value);
+                ++$found;
+            }
+            elsif $_ ~~ Failure {
+                .throw
+            }
+            elsif !$last =:= Mu {
+                self.ASSIGN-KEY($last, $_);
+                ++$found;
+                $last := Mu;
+            }
+            elsif $_ ~~ Map {
+                $found += self!STORE([.pairs])
+            }
+            else {
+                $last := $_;
+            }
+        }
+
+        $last =:= Mu
+          ?? $found
+          !! X::Hash::Store::OddNumber.new(:$found, :$last).throw
     }
 
 #--- Hash methods that *MAY* be implemented by the consumer -------------------
@@ -70,20 +96,21 @@ role Hash::Agnostic:ver<0.0.1>:auth<cpan:ELIZABETH>
     method Array() { Array.from-iterator(self.iterator) }
     method Hash()  {  Hash.from-iterator(self.iterator) }
 
-    method !append(@values) {
-        self.ASSIGN-KEY(self.elems,$_) for @values;
-        self
-    }
+    method !append(@values) { ... }
     method append(+@values is raw) { self!append(@values) }
     method push( **@values is raw) { self!append(@values) }
 
-    method gist() { '{' ~ self.pairs.map( *.gist).join(",") ~ ']' }
-    method Str()  { self.pairs.join(" ") }
+    method gist() {
+        '{' ~ self.pairs.sort( *.key ).map( *.gist).join(", ") ~ '}'
+    }
+    method Str() {
+        self.pairs.sort( *.key ).join(" ")
+    }
     method perl() {
         self.perlseen(self.^name, {
           ~ self.^name
           ~ '.new('
-          ~ self.pairs.map({$_<>.perl}).join(',')
+          ~ self.pairs.sort( *.key ).map({$_<>.perl}).join(',')
           ~ ')'
         })
     }
@@ -111,7 +138,7 @@ Hash::Agnostic - be a hash without knowing how
 =head1 DESCRIPTION
 
 This module makes an C<Hash::Agnostic> role available for those classes that
-wish to implement the C<Associatve> role as a C<Hash>.  It provides all of
+wish to implement the C<Associative> role as a C<Hash>.  It provides all of
 the C<Hash> functionality while only needing to implement 5 methods:
 
 =head2 Required Methods
@@ -175,18 +202,6 @@ These methods may be implemented by the consumer for performance reasons.
 Reset the array to have no elements at all.  By default implemented by
 repeatedly calling C<DELETE-KEY>, which will by all means, be very slow.
 So it is a good idea to implement this method yourself.
-
-=head2 Exported subroutines
-
-=head3 sub is-container
-
-  my $a = 42;
-  say is-container($a);  # True
-  say is-container(42);  # False
-
-Returns whether the given argument is a container or not.  This can be handy
-for situations where you want to also support binding, B<and> allow for
-methods such as C<shift>, C<unshift> and related functions.
 
 =head1 AUTHOR
 

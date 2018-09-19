@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/lizmat/Hash-Agnostic.svg?branch=master)](https://travis-ci.org/lizmat/Hash-Agnostic)
+
 NAME
 ====
 
@@ -20,7 +22,7 @@ SYNOPSIS
 DESCRIPTION
 ===========
 
-This module makes an `Hash::Agnostic` role available for those classes that wish to implement the `Associatve` role as a `Hash`. It provides all of the `Hash` functionality while only needing to implement 5 methods:
+This module makes an `Hash::Agnostic` role available for those classes that wish to implement the `Associative` role as a `Hash`. It provides all of the `Hash` functionality while only needing to implement 5 methods:
 
 Required Methods
 ----------------
@@ -74,17 +76,6 @@ These methods may be implemented by the consumer for performance reasons.
     method CLEAR(--> Nil) { ... }
 
 Reset the array to have no elements at all. By default implemented by repeatedly calling `DELETE-KEY`, which will by all means, be very slow. So it is a good idea to implement this method yourself.
-
-Exported subroutines
---------------------
-
-### sub is-container
-
-    my $a = 42;
-    say is-container($a);  # True
-    say is-container(42);  # False
-
-Returns whether the given argument is a container or not. This can be handy for situations where you want to also support binding, **and** allow for methods such as `shift`, `unshift` and related functions.
 
 AUTHOR
 ======
