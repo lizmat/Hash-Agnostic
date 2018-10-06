@@ -1,6 +1,6 @@
 use v6.c;
 
-role Hash::Agnostic:ver<0.0.2>:auth<cpan:ELIZABETH>
+role Hash::Agnostic:ver<0.0.3>:auth<cpan:ELIZABETH>
   does Associative  # .AT-KEY and friends
   does Iterable     # .iterator, basically
 {
@@ -39,7 +39,7 @@ role Hash::Agnostic:ver<0.0.2>:auth<cpan:ELIZABETH>
         self.AT-KEY($key) = value;
     }
 
-    method STORE(*@values, :$initialize) {
+    multi method STORE(::?ROLE:D: *@values, :$initialize) {
         self.CLEAR;
         self!STORE(@values);
         self
