@@ -1,6 +1,6 @@
 use v6.c;
 
-role Hash::Agnostic:ver<0.0.1>:auth<cpan:ELIZABETH>
+role Hash::Agnostic:ver<0.0.2>:auth<cpan:ELIZABETH>
   does Associative  # .AT-KEY and friends
   does Iterable     # .iterator, basically
 {
@@ -77,7 +77,7 @@ role Hash::Agnostic:ver<0.0.1>:auth<cpan:ELIZABETH>
 
 #--- Hash methods that *MAY* be implemented by the consumer -------------------
     method new(::?CLASS:U: **@values is raw) {
-        self.CREATE.STORE(@values)
+        self.CREATE.STORE(@values, :initialize)
     }
     method iterator() { self.pairs.iterator }
 
