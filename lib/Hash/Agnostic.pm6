@@ -1,6 +1,6 @@
 use v6.c;
 
-role Hash::Agnostic:ver<0.0.3>:auth<cpan:ELIZABETH>
+role Hash::Agnostic:ver<0.0.4>:auth<cpan:ELIZABETH>
   does Associative  # .AT-KEY and friends
   does Iterable     # .iterator, basically
 {
@@ -94,7 +94,7 @@ role Hash::Agnostic:ver<0.0.3>:auth<cpan:ELIZABETH>
     method Slip()  {  Slip.from-iterator(self.iterator) }
     method List()  {  List.from-iterator(self.iterator) }
     method Array() { Array.from-iterator(self.iterator) }
-    method Hash()  {  Hash.from-iterator(self.iterator) }
+    method Hash()  {  Hash.new(self) }
 
     method !append(@values) { ... }
     method append(+@values is raw) { self!append(@values) }

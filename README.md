@@ -10,11 +10,11 @@ SYNOPSIS
 
     use Hash::Agnostic;
     class MyHash does Hash::Agnostic {
-        method AT-KEY()     { ... }
-        method BIND-KEY()   { ... }
-        method DELETE-KEY() { ... }
-        method EXISTS-KEY() { ... }
-        method keys()       { ... }
+        method AT-KEY($key)          { ... }
+        method BIND-KEY($key,$value) { ... }
+        method DELETE-KEY($key)      { ... }
+        method EXISTS-KEY($key)      { ... }
+        method keys()                { ... }
     }
 
     my %a is MyHash = a => 42, b => 666;
