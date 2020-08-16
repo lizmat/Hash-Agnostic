@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/lizmat/Hash-Agnostic.svg?branch=master)](https://travis-ci.org/lizmat/Hash-Agnostic)
-
 NAME
 ====
 
@@ -11,9 +9,6 @@ SYNOPSIS
     use Hash::Agnostic;
     class MyHash does Hash::Agnostic {
         method AT-KEY($key)          { ... }
-        method BIND-KEY($key,$value) { ... }
-        method DELETE-KEY($key)      { ... }
-        method EXISTS-KEY($key)      { ... }
         method keys()                { ... }
     }
 
@@ -22,7 +17,7 @@ SYNOPSIS
 DESCRIPTION
 ===========
 
-This module makes an `Hash::Agnostic` role available for those classes that wish to implement the `Associative` role as a `Hash`. It provides all of the `Hash` functionality while only needing to implement 5 methods:
+This module makes an `Hash::Agnostic` role available for those classes that wish to implement the `Associative` role as a `Hash`. It provides all of the `Hash` functionality while only needing to implement 2 methods:
 
 Required Methods
 ----------------
@@ -34,24 +29,6 @@ Required Methods
     method AT-KEY($key) { Proxy.new( FETCH => { ... }, STORE => { ... } }
 
 Return the value at the given key in the hash. Must return a `Proxy` that will assign to that key if you wish to allow for auto-vivification of elements in your hash.
-
-### method BIND-KEY
-
-    method BIND-KEY($key, $value) { ... }
-
-Bind the given value to the given key in the hash, and return the value.
-
-### method DELETE-KEY
-
-    method DELETE-KEY($key) { ... }
-
-Remove the the given key from the hash and return its value if it existed (otherwise return `Nil`).
-
-### method EXISTS-KEY
-
-    method EXISTS-KEY($key) { ... }
-
-Return `Bool` indicating whether the key exists in the hash.
 
 ### method keys
 
@@ -69,7 +46,25 @@ In alphabetical order: `append`, `ASSIGN-KEY`, `elems`, `end`, `gist`, `grab`, `
 Optional Internal Methods (provided by role)
 --------------------------------------------
 
-These methods may be implemented by the consumer for performance reasons.
+These methods may be implemented by the consumer for performance reasons or to provide a given capability.
+
+### method BIND-KEY
+
+    method BIND-KEY($key, $value) { ... }
+
+Bind the given value to the given key in the hash, and return the value. Throws an error if not implemented.
+
+### method DELETE-KEY
+
+    method DELETE-KEY($key) { ... }
+
+Remove the the given key from the hash and return its value if it existed (otherwise return `Nil`). Throws an error if not implemented.
+
+### method EXISTS-KEY
+
+    method EXISTS-KEY($key) { ... }
+
+Return `Bool` indicating whether the key exists in the hash. Will call `AT-KEY` and return `True` if the returned value is defined.
 
 ### method CLEAR
 
@@ -87,7 +82,7 @@ Source can be located at: https://github.com/lizmat/Hash-Agnostic . Comments and
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright 2018 Elizabeth Mattijsen
+Copyright 2018, 2020 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

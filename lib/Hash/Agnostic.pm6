@@ -1,16 +1,24 @@
 use v6.c;
 
-role Hash::Agnostic:ver<0.0.4>:auth<cpan:ELIZABETH>
+class X::NoImplementation is Exception {
+    has $.object;
+    has $.method;
+    method message() {
+        my $text = "No implementation of $.method method found for $.object.^name().";
+        $*DEFAULT-CLEAN
+          ?? "$text\nThis is needed to be able to clear an agnostic hash."
+          !! $text
+    }
+}
+
+role Hash::Agnostic:ver<0.0.5>:auth<cpan:ELIZABETH>
   does Associative  # .AT-KEY and friends
   does Iterable     # .iterator, basically
 {
 
 #--- These methods *MUST* be implemented by the consumer -----------------------
-    method AT-KEY($)     is raw { ... }
-    method BIND-KEY($,$) is raw { ... }
-    method EXISTS-KEY($)        { ... }
-    method DELETE-KEY($)        { ... }
-    method keys()               { ... }
+    method AT-KEY($) is raw { ... }
+    method keys()           { ... }
 
 #--- Internal Iterator classes that need to be specified here ------------------
     my class KV does Iterator {
@@ -31,6 +39,16 @@ role Hash::Agnostic:ver<0.0.4>:auth<cpan:ELIZABETH>
     }
 
 #--- Associative methods that *MAY* be implemented by the consumer -------------
+    method BIND-KEY($,$) is hidden-from-backtrace {
+        X::NoImplementation.new(object => self, method => 'BIND-KEY').throw
+    }
+
+    method EXISTS-KEY($key) { self.AT-KEY($key).defined }
+
+    method DELETE-KEY($) is hidden-from-backtrace {
+        X::NoImplementation.new(object => self, method => 'DELETE-KEY').throw
+    }
+
     method CLEAR() {
         self.DELETE-KEY($_) for self.keys;
     }
@@ -39,7 +57,7 @@ role Hash::Agnostic:ver<0.0.4>:auth<cpan:ELIZABETH>
         self.AT-KEY($key) = value;
     }
 
-    multi method STORE(::?ROLE:D: *@values, :$initialize) {
+    multi method STORE(::?ROLE:D: *@values) {
         self.CLEAR;
         self!STORE(@values);
         self
@@ -127,9 +145,6 @@ Hash::Agnostic - be a hash without knowing how
   use Hash::Agnostic;
   class MyHash does Hash::Agnostic {
       method AT-KEY($key)          { ... }
-      method BIND-KEY($key,$value) { ... }
-      method DELETE-KEY($key)      { ... }
-      method EXISTS-KEY($key)      { ... }
       method keys()                { ... }
   }
 
@@ -139,7 +154,7 @@ Hash::Agnostic - be a hash without knowing how
 
 This module makes an C<Hash::Agnostic> role available for those classes that
 wish to implement the C<Associative> role as a C<Hash>.  It provides all of
-the C<Hash> functionality while only needing to implement 5 methods:
+the C<Hash> functionality while only needing to implement 2 methods:
 
 =head2 Required Methods
 
@@ -152,25 +167,6 @@ the C<Hash> functionality while only needing to implement 5 methods:
 Return the value at the given key in the hash.  Must return a C<Proxy> that
 will assign to that key if you wish to allow for auto-vivification of elements
 in your hash.
-
-=head3 method BIND-KEY
-
-  method BIND-KEY($key, $value) { ... }
-
-Bind the given value to the given key in the hash, and return the value.
-
-=head3 method DELETE-KEY
-
-  method DELETE-KEY($key) { ... }
-
-Remove the the given key from the hash and return its value if it existed
-(otherwise return C<Nil>).
-
-=head3 method EXISTS-KEY
-
-  method EXISTS-KEY($key) { ... }
-
-Return C<Bool> indicating whether the key exists in the hash.
 
 =head3 method keys
 
@@ -193,7 +189,29 @@ C<Slip>, C<STORE>, C<Str>, C<values>
 
 =head2 Optional Internal Methods (provided by role)
 
-These methods may be implemented by the consumer for performance reasons.
+These methods may be implemented by the consumer for performance reasons
+or to provide a given capability.
+
+=head3 method BIND-KEY
+
+  method BIND-KEY($key, $value) { ... }
+
+Bind the given value to the given key in the hash, and return the value.
+Throws an error if not implemented.
+
+=head3 method DELETE-KEY
+
+  method DELETE-KEY($key) { ... }
+
+Remove the the given key from the hash and return its value if it existed
+(otherwise return C<Nil>).  Throws an error if not implemented.
+
+=head3 method EXISTS-KEY
+
+  method EXISTS-KEY($key) { ... }
+
+Return C<Bool> indicating whether the key exists in the hash.  Will call
+C<AT-KEY> and return C<True> if the returned value is defined.
 
 =head3 method CLEAR
 
@@ -212,10 +230,10 @@ Comments and Pull Requests are welcome.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018 Elizabeth Mattijsen
+Copyright 2018, 2020 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
 =end pod
 
-# vim: ft=perl6 expandtab sw=4
+# vim: expandtab shiftwidth=4

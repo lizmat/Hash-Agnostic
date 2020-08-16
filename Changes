@@ -2,6 +2,11 @@ Revision history for Hash-Agnostic
 
 {{$NEXT}}
 
+0.0.5  2020-08-16T19:54:07+02:00
+    - Remove incorrect reference to :$initialize, it is not needed anyway
+    - Provide default implementation for BIND-KEY, EXISTS-KEY, DELETE-KEY
+    - Add Github CI info
+
 0.0.4  2018-12-31T00:02:45+01:00
     - Fix .Hash coercer, spotted by Fernando Santagata
 
