@@ -2,6 +2,9 @@ Revision history for Hash-Agnostic
 
 {{$NEXT}}
 
+0.0.6  2020-08-16T20:35:58+02:00
+    - Make sure extended error message occurs when re-initializing
+
 0.0.5  2020-08-16T19:54:07+02:00
     - Remove incorrect reference to :$initialize, it is not needed anyway
     - Provide default implementation for BIND-KEY, EXISTS-KEY, DELETE-KEY

@@ -11,7 +11,7 @@ class X::NoImplementation is Exception {
     }
 }
 
-role Hash::Agnostic:ver<0.0.5>:auth<cpan:ELIZABETH>
+role Hash::Agnostic:ver<0.0.6>:auth<cpan:ELIZABETH>
   does Associative  # .AT-KEY and friends
   does Iterable     # .iterator, basically
 {
@@ -50,6 +50,7 @@ role Hash::Agnostic:ver<0.0.5>:auth<cpan:ELIZABETH>
     }
 
     method CLEAR() {
+        my $*DEFAULT-CLEAN := True;
         self.DELETE-KEY($_) for self.keys;
     }
 
