@@ -27,4 +27,4 @@ jobs:
       - name: Show Version
         run: raku --version
       - name: Run Tests
-        run: raku -Ilib t/01-basic.t && raku -Ilib 02-minimal.t
+        run: raku -Ilib t/01-basic.t && raku -Ilib t/02-minimal.t
