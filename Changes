@@ -2,6 +2,11 @@ Revision history for Hash-Agnostic
 
 {{$NEXT}}
 
+0.0.7  2021-01-30T12:17:53+01:00
+    - Add "raku" method, deprecate "perl" method
+    - Make sure default implementations only take instances
+    - Update copyright year
+
 0.0.6  2020-08-16T20:35:58+02:00
     - Make sure extended error message occurs when re-initializing
 

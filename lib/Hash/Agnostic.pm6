@@ -11,7 +11,7 @@ class X::NoImplementation is Exception {
     }
 }
 
-role Hash::Agnostic:ver<0.0.6>:auth<cpan:ELIZABETH>
+role Hash::Agnostic:ver<0.0.7>:auth<cpan:ELIZABETH>
   does Associative  # .AT-KEY and friends
   does Iterable     # .iterator, basically
 {
@@ -39,22 +39,22 @@ role Hash::Agnostic:ver<0.0.6>:auth<cpan:ELIZABETH>
     }
 
 #--- Associative methods that *MAY* be implemented by the consumer -------------
-    method BIND-KEY($,$) is hidden-from-backtrace {
+    method BIND-KEY(::?ROLE:D: $,$) is hidden-from-backtrace {
         X::NoImplementation.new(object => self, method => 'BIND-KEY').throw
     }
 
-    method EXISTS-KEY($key) { self.AT-KEY($key).defined }
+    method EXISTS-KEY(::?ROLE:D: $key) { self.AT-KEY($key).defined }
 
-    method DELETE-KEY($) is hidden-from-backtrace {
+    method DELETE-KEY(::?ROLE:D: $) is hidden-from-backtrace {
         X::NoImplementation.new(object => self, method => 'DELETE-KEY').throw
     }
 
-    method CLEAR() {
+    method CLEAR(::?ROLE:D:) {
         my $*DEFAULT-CLEAN := True;
         self.DELETE-KEY($_) for self.keys;
     }
 
-    method ASSIGN-KEY($key, \value) is raw {
+    method ASSIGN-KEY(::?ROLE:D: $key, \value) is raw {
         self.AT-KEY($key) = value;
     }
 
@@ -98,34 +98,35 @@ role Hash::Agnostic:ver<0.0.6>:auth<cpan:ELIZABETH>
     method new(::?CLASS:U: **@values is raw) {
         self.CREATE.STORE(@values, :initialize)
     }
-    method iterator() { self.pairs.iterator }
+    method iterator(::?ROLE:D:) { self.pairs.iterator }
 
-    method elems()  { self.keys.elems }
-    method end()    { self.elems - 1 }
-    method values() { self.keys.map: { self.AT-KEY($_) } }
-    method pairs()  { self.keys.map: { Pair.new($_, self.AT-KEY($_) ) } }
+    method elems(::?ROLE:D:)  { self.keys.elems }
+    method end(::?ROLE:D:)    { self.elems - 1 }
+    method values(::?ROLE:D:) { self.keys.map: { self.AT-KEY($_) } }
+    method pairs(::?ROLE:D:)  { self.keys.map: { Pair.new($_, self.AT-KEY($_) ) } }
 
-    method kv() {
+    method kv(::?ROLE:D:) {
         Seq.new( KV.new( :backend(self), :iterator(self.keys.iterator ) ) )
     }
 
-    method list()  {  List.from-iterator(self.iterator) }
-    method Slip()  {  Slip.from-iterator(self.iterator) }
-    method List()  {  List.from-iterator(self.iterator) }
-    method Array() { Array.from-iterator(self.iterator) }
-    method Hash()  {  Hash.new(self) }
+    method list(::?ROLE:D:)  {  List.from-iterator(self.iterator) }
+    method Slip(::?ROLE:D:)  {  Slip.from-iterator(self.iterator) }
+    method List(::?ROLE:D:)  {  List.from-iterator(self.iterator) }
+    method Array(::?ROLE:D:) { Array.from-iterator(self.iterator) }
+    method Hash(::?ROLE:D:)  {  Hash.new(self) }
 
     method !append(@values) { ... }
-    method append(+@values is raw) { self!append(@values) }
-    method push( **@values is raw) { self!append(@values) }
+    method append(::?ROLE:D: +@values is raw) { self!append(@values) }
+    method push(::?ROLE:D:  **@values is raw) { self!append(@values) }
 
-    method gist() {
+    method gist(::?ROLE:D:) {
         '{' ~ self.pairs.sort( *.key ).map( *.gist).join(", ") ~ '}'
     }
-    method Str() {
+    method Str(::?ROLE:D:) {
         self.pairs.sort( *.key ).join(" ")
     }
-    method perl() {
+    method perl(::?ROLE:D:) is DEPRECATED("raku") { self.raku }
+    method raku(::?ROLE:D:) {
         self.perlseen(self.^name, {
           ~ self.^name
           ~ '.new('
@@ -231,7 +232,7 @@ Comments and Pull Requests are welcome.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018, 2020 Elizabeth Mattijsen
+Copyright 2018,2020,2021 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
