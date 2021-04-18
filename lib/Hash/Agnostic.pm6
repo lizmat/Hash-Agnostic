@@ -104,6 +104,7 @@ role Hash::Agnostic:ver<0.0.7>:auth<cpan:ELIZABETH>
     method end(::?ROLE:D:)    { self.elems - 1 }
     method values(::?ROLE:D:) { self.keys.map: { self.AT-KEY($_) } }
     method pairs(::?ROLE:D:)  { self.keys.map: { Pair.new($_, self.AT-KEY($_) ) } }
+    method antipairs(::?ROLE:D:)  { self.keys.map: { Pair.new(self.AT-KEY($_), $_ ) } }
 
     method kv(::?ROLE:D:) {
         Seq.new( KV.new( :backend(self), :iterator(self.keys.iterator ) ) )
