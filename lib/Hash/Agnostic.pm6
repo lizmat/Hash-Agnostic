@@ -11,7 +11,7 @@ class X::NoImplementation is Exception {
     }
 }
 
-role Hash::Agnostic:ver<0.0.7>:auth<cpan:ELIZABETH>
+role Hash::Agnostic:ver<0.0.8>:auth<cpan:ELIZABETH>
   does Associative  # .AT-KEY and friends
   does Iterable     # .iterator, basically
 {

@@ -2,6 +2,10 @@ Revision history for Hash-Agnostic
 
 {{$NEXT}}
 
+0.0.8  2021-07-17T09:59:49+02:00
+    - Change "perl" into "raku" in tests
+    - Add "antipairs" method
+
 0.0.7  2021-01-30T12:17:53+01:00
     - Add "raku" method, deprecate "perl" method
     - Make sure default implementations only take instances
