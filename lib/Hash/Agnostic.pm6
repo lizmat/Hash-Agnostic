@@ -54,7 +54,7 @@ role Hash::Agnostic:ver<0.0.8>:auth<cpan:ELIZABETH>
         self.DELETE-KEY($_) for self.keys;
     }
 
-    method ASSIGN-KEY(::?ROLE:D: $key, \value) is raw {
+    method ASSIGN-KEY(::?ROLE:D: $key, Mu \value) is raw {
         self.AT-KEY($key) = value;
     }
 
