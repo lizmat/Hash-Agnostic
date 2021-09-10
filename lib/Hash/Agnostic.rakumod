@@ -11,7 +11,7 @@ class X::NoImplementation is Exception {
     }
 }
 
-role Hash::Agnostic:ver<0.0.9>:auth<cpan:ELIZABETH>
+role Hash::Agnostic:ver<0.0.10>:auth<zef:lizmat>
   does Associative  # .AT-KEY and friends
   does Iterable     # .iterator, basically
 {
@@ -226,14 +226,14 @@ So it is a good idea to implement this method yourself.
 
 =head1 AUTHOR
 
-Elizabeth Mattijsen <liz@wenzperl.nl>
+Elizabeth Mattijsen <liz@raku.rocks>
 
 Source can be located at: https://github.com/lizmat/Hash-Agnostic .
 Comments and Pull Requests are welcome.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018,2020,2021 Elizabeth Mattijsen
+Copyright 2018, 2020, 2021 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
