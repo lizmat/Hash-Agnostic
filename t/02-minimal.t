@@ -10,7 +10,7 @@ class MinimalHash does Hash::Agnostic {
     method keys()              { %!hash.keys         }
 }
 
-plan 9;
+plan 10;
 
 my @keys   := <a b c d e f g h>;
 my @values := 42, 666, 314, 628, 271, 6, 7, 8;
@@ -86,5 +86,12 @@ subtest {
     is-deeply %h.pairs.sort( *.key ), @pairs, 'does .pairs work';
     is-deeply %h.kv.sort,           @kv.sort, 'does .kv work';
 }, 'check iterator based methods';
+
+subtest {
+    plan 3;
+    is-deeply +%h, 8,    'does it numerify ok';
+    is-deeply ?%h, True, 'does it boolify ok';
+    is-deeply %h.Int, 8, 'does it intify ok';
+}
 
 # vim: expandtab shiftwidth=4

@@ -11,7 +11,7 @@ class X::NoImplementation is Exception {
     }
 }
 
-role Hash::Agnostic:ver<0.0.10>:auth<zef:lizmat>
+role Hash::Agnostic
   does Associative  # .AT-KEY and friends
   does Iterable     # .iterator, basically
 {
@@ -100,12 +100,21 @@ role Hash::Agnostic:ver<0.0.10>:auth<zef:lizmat>
     }
     method iterator(::?ROLE:D:) { self.pairs.iterator }
 
-    method elems(::?ROLE:D:)  { self.keys.elems }
-    method end(::?ROLE:D:)    { self.elems - 1 }
-    method values(::?ROLE:D:) { self.keys.map: { self.AT-KEY($_) } }
-    method pairs(::?ROLE:D:)  { self.keys.map: { Pair.new($_, self.AT-KEY($_) ) } }
-    method antipairs(::?ROLE:D:)  { self.keys.map: { Pair.new(self.AT-KEY($_), $_ ) } }
+    method elems(::?ROLE:D:)   { self.keys.elems }
+    method Numeric(::?ROLE:D:) { self.elems      }
+    method Int(::?ROLE:D:)     { self.elems      }
+    method Bool(::?ROLE:D:)    { so self.elems   }
+    method end(::?ROLE:D:)     { self.elems - 1  }
 
+    method values(::?ROLE:D:) {
+        self.keys.map: { self.AT-KEY($_) }
+    }
+    method pairs(::?ROLE:D:) {
+        self.keys.map: { Pair.new($_, self.AT-KEY($_) ) }
+    }
+    method antipairs(::?ROLE:D:) {
+        self.keys.map: { Pair.new(self.AT-KEY($_), $_ ) }
+    }
     method kv(::?ROLE:D:) {
         Seq.new( KV.new( :backend(self), :iterator(self.keys.iterator ) ) )
     }
@@ -231,9 +240,13 @@ Elizabeth Mattijsen <liz@raku.rocks>
 Source can be located at: https://github.com/lizmat/Hash-Agnostic .
 Comments and Pull Requests are welcome.
 
+If you like this module, or what I’m doing more generally, committing to a
+L<small sponsorship|https://github.com/sponsors/lizmat/>  would mean a great
+deal to me!
+
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018, 2020, 2021 Elizabeth Mattijsen
+Copyright 2018, 2020, 2023 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
