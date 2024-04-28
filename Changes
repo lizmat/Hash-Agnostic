@@ -2,6 +2,12 @@ Revision history for Hash-Agnostic
 
 {{$NEXT}}
 
+0.0.12  2024-04-28T12:05:31+02:00
+    - Rename exception class to prevent import clash with
+      Array::Agnostic.  Tim Nelson++ for report
+    - Give test files a modern Raku extension
+    - Updated copyright year
+
 0.0.11  2023-12-15T18:23:14+01:00
     - Added support for .Numeric, .Int, .Bool
     - Added sponsor link

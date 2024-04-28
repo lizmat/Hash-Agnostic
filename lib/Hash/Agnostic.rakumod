@@ -1,6 +1,6 @@
 use v6.c;
 
-class X::NoImplementation is Exception {
+my class X::Hash::NoImplementation is Exception {
     has $.object;
     has $.method;
     method message() {
@@ -40,13 +40,13 @@ role Hash::Agnostic
 
 #--- Associative methods that *MAY* be implemented by the consumer -------------
     method BIND-KEY(::?ROLE:D: $,$) is hidden-from-backtrace {
-        X::NoImplementation.new(object => self, method => 'BIND-KEY').throw
+        X::Hash::NoImplementation.new(object => self, method => 'BIND-KEY').throw
     }
 
     method EXISTS-KEY(::?ROLE:D: $key) { self.AT-KEY($key).defined }
 
     method DELETE-KEY(::?ROLE:D: $) is hidden-from-backtrace {
-        X::NoImplementation.new(object => self, method => 'DELETE-KEY').throw
+        X::Hash::NoImplementation.new(object => self, method => 'DELETE-KEY').throw
     }
 
     method CLEAR(::?ROLE:D:) {
@@ -246,7 +246,7 @@ deal to me!
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018, 2020, 2023 Elizabeth Mattijsen
+Copyright 2018, 2020, 2023, 2024 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
