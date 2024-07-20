@@ -1,6 +1,8 @@
 Revision history for Hash-Agnostic
 
 {{$NEXT}}
+
+0.0.13  2024-07-20T12:38:18+02:00
     - Remove "list" and "List" from supported methods list for
       now because of some weird interaction when the role is being
       consumed by a class that has a TWEAK method in it.
