@@ -5,9 +5,15 @@ use Hash::Agnostic;
 
 class MinimalHash does Hash::Agnostic {
     has %!hash;
+    has Bool $.tweaked = False;
+    has Str  $.colour = 'red';
 
     method AT-KEY($key) is raw { %!hash.AT-KEY($key) }
     method keys()              { %!hash.keys         }
+
+    submethod TWEAK() {
+        $!tweaked = True;
+    }
 }
 
 plan 10;
@@ -92,6 +98,13 @@ subtest {
     is-deeply +%h, 8,    'does it numerify ok';
     is-deeply ?%h, True, 'does it boolify ok';
     is-deeply %h.Int, 8, 'does it intify ok';
-}
+};
+
+subtest {
+    plan 2;
+
+    is(%h.tweaked, True , "TWEAK ran");
+    is(%h.colour , 'red', "Attribute initialised");
+}, "Check initialisation";
 
 # vim: expandtab shiftwidth=4
