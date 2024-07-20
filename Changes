@@ -1,6 +1,11 @@
 Revision history for Hash-Agnostic
 
 {{$NEXT}}
+    - Remove "list" and "List" from supported methods list for
+      now because of some weird interaction when the role is being
+      consumed by a class that has a TWEAK method in it.
+    - Add separate CI badges for each OS supported
+    - Add sponsor button
 
 0.0.12  2024-04-28T12:05:31+02:00
     - Rename exception class to prevent import clash with

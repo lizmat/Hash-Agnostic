@@ -1,4 +1,4 @@
-use v6.c;
+use v6.d;
 
 my class X::Hash::NoImplementation is Exception {
     has $.object;
@@ -119,9 +119,9 @@ role Hash::Agnostic
         Seq.new( KV.new( :backend(self), :iterator(self.keys.iterator ) ) )
     }
 
-    method list(::?ROLE:D:)  {  List.from-iterator(self.iterator) }
+#    method list(::?ROLE:D:)  {  List.from-iterator(self.iterator) }
     method Slip(::?ROLE:D:)  {  Slip.from-iterator(self.iterator) }
-    method List(::?ROLE:D:)  {  List.from-iterator(self.iterator) }
+#    method List(::?ROLE:D:)  {  List.from-iterator(self.iterator) }
     method Array(::?ROLE:D:) { Array.from-iterator(self.iterator) }
     method Hash(::?ROLE:D:)  {  Hash.new(self) }
 
@@ -198,6 +198,9 @@ In alphabetical order:
 C<append>, C<ASSIGN-KEY>, C<elems>, C<end>, C<gist>, C<grab>, C<Hash>,
 C<iterator>, C<kv>, C<list>, C<List>, C<new>, C<pairs>, C<perl>, C<push>,
 C<Slip>, C<STORE>, C<Str>, C<values>
+
+Note: methods C<list> and C<List> have been removed temporarily while
+conducting bug research.
 
 =head2 Optional Internal Methods (provided by role)
 

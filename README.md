@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/lizmat/Hash-Agnostic/workflows/test/badge.svg)](https://github.com/lizmat/Hash-Agnostic/actions)
+[![Actions Status](https://github.com/lizmat/Hash-Agnostic/actions/workflows/linux.yml/badge.svg)](https://github.com/lizmat/Hash-Agnostic/actions) [![Actions Status](https://github.com/lizmat/Hash-Agnostic/actions/workflows/macos.yml/badge.svg)](https://github.com/lizmat/Hash-Agnostic/actions) [![Actions Status](https://github.com/lizmat/Hash-Agnostic/actions/workflows/windows.yml/badge.svg)](https://github.com/lizmat/Hash-Agnostic/actions)
 
 NAME
 ====
@@ -44,6 +44,8 @@ Optional Methods (provided by role)
 You may implement these methods out of performance reasons yourself, but you don't have to as an implementation is provided by this role. They follow the same semantics as the methods on the [Hash object](https://docs.perl6.org/type/Hash).
 
 In alphabetical order: `append`, `ASSIGN-KEY`, `elems`, `end`, `gist`, `grab`, `Hash`, `iterator`, `kv`, `list`, `List`, `new`, `pairs`, `perl`, `push`, `Slip`, `STORE`, `Str`, `values`
+
+Note: methods `list` and `List` have been removed temporarily while conducting bug research.
 
 Optional Internal Methods (provided by role)
 --------------------------------------------
