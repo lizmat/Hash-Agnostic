@@ -96,7 +96,7 @@ role Hash::Agnostic
 
 #--- Hash methods that *MAY* be implemented by the consumer -------------------
     method new(::?CLASS:U: **@values is raw) {
-        self.CREATE.STORE(@values, :initialize)
+        self.bless(|%_).STORE(@values, :initialize)
     }
     method iterator(::?ROLE:D:) { self.pairs.iterator }
 
@@ -119,9 +119,9 @@ role Hash::Agnostic
         Seq.new( KV.new( :backend(self), :iterator(self.keys.iterator ) ) )
     }
 
-#    method list(::?ROLE:D:)  {  List.from-iterator(self.iterator) }
+    method list(::?ROLE:D:)  {  List.from-iterator(self.iterator) }
     method Slip(::?ROLE:D:)  {  Slip.from-iterator(self.iterator) }
-#    method List(::?ROLE:D:)  {  List.from-iterator(self.iterator) }
+    method List(::?ROLE:D:)  {  List.from-iterator(self.iterator) }
     method Array(::?ROLE:D:) { Array.from-iterator(self.iterator) }
     method Hash(::?ROLE:D:)  {  Hash.new(self) }
 

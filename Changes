@@ -2,6 +2,12 @@ Revision history for Hash-Agnostic
 
 {{$NEXT}}
 
+0.0.14  2024-07-21T11:27:18+02:00
+    - Make sure that .new will actually take any named arguments
+      and run the normal object creation logic.  wayland++ for
+      exposing this deficiency
+    - Restore "list" and "List" methods, they work again
+
 0.0.13  2024-07-20T12:38:18+02:00
     - Remove "list" and "List" from supported methods list for
       now because of some weird interaction when the role is being

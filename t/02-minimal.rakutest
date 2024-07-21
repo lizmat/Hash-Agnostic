@@ -11,12 +11,10 @@ class MinimalHash does Hash::Agnostic {
     method AT-KEY($key) is raw { %!hash.AT-KEY($key) }
     method keys()              { %!hash.keys         }
 
-    submethod TWEAK() {
-        $!tweaked = True;
-    }
+    submethod TWEAK() { $!tweaked = True }
 }
 
-plan 10;
+plan 11;
 
 my @keys   := <a b c d e f g h>;
 my @values := 42, 666, 314, 628, 271, 6, 7, 8;
