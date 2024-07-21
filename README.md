@@ -45,8 +45,6 @@ You may implement these methods out of performance reasons yourself, but you don
 
 In alphabetical order: `append`, `ASSIGN-KEY`, `elems`, `end`, `gist`, `grab`, `Hash`, `iterator`, `kv`, `list`, `List`, `new`, `pairs`, `perl`, `push`, `Slip`, `STORE`, `Str`, `values`
 
-Note: methods `list` and `List` have been removed temporarily while conducting bug research.
-
 Optional Internal Methods (provided by role)
 --------------------------------------------
 

@@ -199,9 +199,6 @@ C<append>, C<ASSIGN-KEY>, C<elems>, C<end>, C<gist>, C<grab>, C<Hash>,
 C<iterator>, C<kv>, C<list>, C<List>, C<new>, C<pairs>, C<perl>, C<push>,
 C<Slip>, C<STORE>, C<Str>, C<values>
 
-Note: methods C<list> and C<List> have been removed temporarily while
-conducting bug research.
-
 =head2 Optional Internal Methods (provided by role)
 
 These methods may be implemented by the consumer for performance reasons
