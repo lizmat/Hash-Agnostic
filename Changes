@@ -2,6 +2,9 @@ Revision history for Hash-Agnostic
 
 {{$NEXT}}
 
+0.0.16  2024-08-10T12:33:55+02:00
+    - Better fix for handling .Str and .gist on type objects
+
 0.0.15  2024-08-10T12:06:26+02:00
     - Allow .gist / .Str / .raku / .perl to be called in type objects,
       Tim Nelson++ for spotting this deficiency

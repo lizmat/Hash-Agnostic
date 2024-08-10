@@ -90,8 +90,8 @@ subtest {
     is-deeply %h.kv.sort,           @kv.sort, 'does .kv work';
 }, 'check iterator based methods';
 
-is-deeply MyHash.raku, 'MyHash';
-is-deeply MyHash.Str,  '(MyHash)';
-is-deeply MyHash.gist, '(MyHash)';
+is-deeply MyHash.raku, 'MyHash',   'does .raku work on type object';
+quietly is-deeply MyHash.Str, '',  'does .Str  work on type object';
+is-deeply MyHash.gist, '(MyHash)', 'does .gist work on type object';
 
 # vim: expandtab shiftwidth=4

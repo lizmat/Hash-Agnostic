@@ -129,29 +129,29 @@ role Hash::Agnostic
     method append(::?ROLE:D: +@values is raw) { self!append(@values) }
     method push(::?ROLE:D:  **@values is raw) { self!append(@values) }
 
-    method gist(::?ROLE:) {
-        self.defined
-          ?? '{' ~ self.pairs.sort( *.key ).map( *.gist).join(", ") ~ '}'
-          !! '(' ~ self.^name ~ ')'
+    proto method gist(|) {*}
+    multi method gist(::?ROLE:U:) { self.Mu::gist }
+    multi method gist(::?ROLE:D:) {
+        '{' ~ self.pairs.sort( *.key ).map( *.gist).join(", ") ~ '}'
     }
 
-    method Str(::?ROLE:) {
-        self.defined
-          ?? self.pairs.sort( *.key ).join(" ")
-          !! '(' ~ self.^name ~ ')'
+    proto method Str(|) {*}
+    multi method Str(::?ROLE:U:) { self.Mu::Str }
+    multi method Str(::?ROLE:D:) {
+        self.pairs.sort( *.key ).join(" ")
     }
 
     method perl(::?ROLE:) is DEPRECATED("raku") { self.raku }
 
-    method raku(::?ROLE:) {
-        self.defined
-          ?? self.rakuseen(self.^name, {
-               ~ self.^name
-               ~ '.new('
-               ~ self.pairs.sort( *.key ).map({$_<>.raku}).join(',')
-               ~ ')'
-             })
-          !! self.^name
+    proto method raku(|) {*}
+    multi method raku(::?ROLE:U:) { self.^name }
+    multi method raku(::?ROLE:D:) {
+        self.rakuseen(self.^name, {
+          ~ self.^name
+          ~ '.new('
+          ~ self.pairs.sort( *.key ).map({$_<>.raku}).join(',')
+          ~ ')'
+        })
     }
 }
 
