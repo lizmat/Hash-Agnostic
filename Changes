@@ -2,11 +2,17 @@ Revision history for Hash-Agnostic
 
 {{$NEXT}}
 
+0.0.17  2024-08-10T16:02:31+02:00
+    - Don't call .STORE if there are no values to be stored.  This
+      will allow agnostic hashes to be initialized in a TWEAK
+      method without going through the local AT-KEY logic.  Issue
+      spotted by Tim Nelson in Hash::Ordered
+
 0.0.16  2024-08-10T12:33:55+02:00
     - Better fix for handling .Str and .gist on type objects
 
 0.0.15  2024-08-10T12:06:26+02:00
-    - Allow .gist / .Str / .raku / .perl to be called in type objects,
+    - Allow .gist / .Str / .raku / .perl to be called on type objects,
       Tim Nelson++ for spotting this deficiency
     - Modernize pod
 
