@@ -13,7 +13,7 @@ class MyHash does Hash::Agnostic {
     method keys()                       { %!hash.keys                 }
 }
 
-plan 8;
+plan 11;
 
 my @keys   := <a b c d e f g h>;
 my @values := 42, 666, 314, 628, 271, 6, 7, 8;
@@ -89,5 +89,9 @@ subtest {
     is-deeply %h.pairs.sort( *.key ), @pairs, 'does .pairs work';
     is-deeply %h.kv.sort,           @kv.sort, 'does .kv work';
 }, 'check iterator based methods';
+
+is-deeply MyHash.raku, 'MyHash';
+is-deeply MyHash.Str,  '(MyHash)';
+is-deeply MyHash.gist, '(MyHash)';
 
 # vim: expandtab shiftwidth=4

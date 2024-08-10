@@ -129,20 +129,29 @@ role Hash::Agnostic
     method append(::?ROLE:D: +@values is raw) { self!append(@values) }
     method push(::?ROLE:D:  **@values is raw) { self!append(@values) }
 
-    method gist(::?ROLE:D:) {
-        '{' ~ self.pairs.sort( *.key ).map( *.gist).join(", ") ~ '}'
+    method gist(::?ROLE:) {
+        self.defined
+          ?? '{' ~ self.pairs.sort( *.key ).map( *.gist).join(", ") ~ '}'
+          !! '(' ~ self.^name ~ ')'
     }
-    method Str(::?ROLE:D:) {
-        self.pairs.sort( *.key ).join(" ")
+
+    method Str(::?ROLE:) {
+        self.defined
+          ?? self.pairs.sort( *.key ).join(" ")
+          !! '(' ~ self.^name ~ ')'
     }
-    method perl(::?ROLE:D:) is DEPRECATED("raku") { self.raku }
-    method raku(::?ROLE:D:) {
-        self.perlseen(self.^name, {
-          ~ self.^name
-          ~ '.new('
-          ~ self.pairs.sort( *.key ).map({$_<>.perl}).join(',')
-          ~ ')'
-        })
+
+    method perl(::?ROLE:) is DEPRECATED("raku") { self.raku }
+
+    method raku(::?ROLE:) {
+        self.defined
+          ?? self.rakuseen(self.^name, {
+               ~ self.^name
+               ~ '.new('
+               ~ self.pairs.sort( *.key ).map({$_<>.raku}).join(',')
+               ~ ')'
+             })
+          !! self.^name
     }
 }
 
@@ -154,13 +163,17 @@ Hash::Agnostic - be a hash without knowing how
 
 =head1 SYNOPSIS
 
-  use Hash::Agnostic;
-  class MyHash does Hash::Agnostic {
-      method AT-KEY($key)          { ... }
-      method keys()                { ... }
-  }
+=begin code :lang<raku>
 
-  my %a is MyHash = a => 42, b => 666;
+use Hash::Agnostic;
+class MyHash does Hash::Agnostic {
+    method AT-KEY($key)          { ... }
+    method keys()                { ... }
+}
+
+my %a is MyHash = a => 42, b => 666;
+
+=end code
 
 =head1 DESCRIPTION
 
@@ -172,9 +185,13 @@ the C<Hash> functionality while only needing to implement 2 methods:
 
 =head3 method AT-KEY
 
-  method AT-KEY($key) { ... }  # simple case
+=begin code :lang<raku>
 
-  method AT-KEY($key) { Proxy.new( FETCH => { ... }, STORE => { ... } }
+method AT-KEY($key) { ... }  # simple case
+
+method AT-KEY($key) { Proxy.new( FETCH => { ... }, STORE => { ... } }
+
+=end code
 
 Return the value at the given key in the hash.  Must return a C<Proxy> that
 will assign to that key if you wish to allow for auto-vivification of elements
@@ -182,7 +199,11 @@ in your hash.
 
 =head3 method keys
 
+=begin code :lang<raku>
+
   method keys() { ... }
+
+=end code
 
 Return the keys that currently exist in the hash, in any order that is
 most convenient.
@@ -206,28 +227,44 @@ or to provide a given capability.
 
 =head3 method BIND-KEY
 
-  method BIND-KEY($key, $value) { ... }
+=begin code :lang<raku>
+
+method BIND-KEY($key, $value) { ... }
+
+=end code
 
 Bind the given value to the given key in the hash, and return the value.
 Throws an error if not implemented.
 
 =head3 method DELETE-KEY
 
-  method DELETE-KEY($key) { ... }
+=begin code :lang<raku>
+
+method DELETE-KEY($key) { ... }
+
+=end code
 
 Remove the the given key from the hash and return its value if it existed
 (otherwise return C<Nil>).  Throws an error if not implemented.
 
 =head3 method EXISTS-KEY
 
-  method EXISTS-KEY($key) { ... }
+=begin code :lang<raku>
+
+method EXISTS-KEY($key) { ... }
+
+=end code
 
 Return C<Bool> indicating whether the key exists in the hash.  Will call
 C<AT-KEY> and return C<True> if the returned value is defined.
 
 =head3 method CLEAR
 
-  method CLEAR(--> Nil) { ... }
+=begin code :lang<raku>
+
+method CLEAR(--> Nil) { ... }
+
+=end code
 
 Reset the array to have no elements at all.  By default implemented by
 repeatedly calling C<DELETE-KEY>, which will by all means, be very slow.

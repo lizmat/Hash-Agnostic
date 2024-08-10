@@ -2,9 +2,14 @@ Revision history for Hash-Agnostic
 
 {{$NEXT}}
 
+0.0.15  2024-08-10T12:06:26+02:00
+    - Allow .gist / .Str / .raku / .perl to be called in type objects,
+      Tim Nelson++ for spotting this deficiency
+    - Modernize pod
+
 0.0.14  2024-07-21T11:27:18+02:00
     - Make sure that .new will actually take any named arguments
-      and run the normal object creation logic.  wayland++ for
+      and run the normal object creation logic.  Tim Nelson++ for
       exposing this deficiency
     - Restore "list" and "List" methods, they work again
 

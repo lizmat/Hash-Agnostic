@@ -8,13 +8,15 @@ Hash::Agnostic - be a hash without knowing how
 SYNOPSIS
 ========
 
-    use Hash::Agnostic;
-    class MyHash does Hash::Agnostic {
-        method AT-KEY($key)          { ... }
-        method keys()                { ... }
-    }
+```raku
+use Hash::Agnostic;
+class MyHash does Hash::Agnostic {
+    method AT-KEY($key)          { ... }
+    method keys()                { ... }
+}
 
-    my %a is MyHash = a => 42, b => 666;
+my %a is MyHash = a => 42, b => 666;
+```
 
 DESCRIPTION
 ===========
@@ -26,15 +28,19 @@ Required Methods
 
 ### method AT-KEY
 
-    method AT-KEY($key) { ... }  # simple case
+```raku
+method AT-KEY($key) { ... }  # simple case
 
-    method AT-KEY($key) { Proxy.new( FETCH => { ... }, STORE => { ... } }
+method AT-KEY($key) { Proxy.new( FETCH => { ... }, STORE => { ... } }
+```
 
 Return the value at the given key in the hash. Must return a `Proxy` that will assign to that key if you wish to allow for auto-vivification of elements in your hash.
 
 ### method keys
 
-    method keys() { ... }
+```raku
+  method keys() { ... }
+```
 
 Return the keys that currently exist in the hash, in any order that is most convenient.
 
@@ -52,25 +58,33 @@ These methods may be implemented by the consumer for performance reasons or to p
 
 ### method BIND-KEY
 
-    method BIND-KEY($key, $value) { ... }
+```raku
+method BIND-KEY($key, $value) { ... }
+```
 
 Bind the given value to the given key in the hash, and return the value. Throws an error if not implemented.
 
 ### method DELETE-KEY
 
-    method DELETE-KEY($key) { ... }
+```raku
+method DELETE-KEY($key) { ... }
+```
 
 Remove the the given key from the hash and return its value if it existed (otherwise return `Nil`). Throws an error if not implemented.
 
 ### method EXISTS-KEY
 
-    method EXISTS-KEY($key) { ... }
+```raku
+method EXISTS-KEY($key) { ... }
+```
 
 Return `Bool` indicating whether the key exists in the hash. Will call `AT-KEY` and return `True` if the returned value is defined.
 
 ### method CLEAR
 
-    method CLEAR(--> Nil) { ... }
+```raku
+method CLEAR(--> Nil) { ... }
+```
 
 Reset the array to have no elements at all. By default implemented by repeatedly calling `DELETE-KEY`, which will by all means, be very slow. So it is a good idea to implement this method yourself.
 
