@@ -17,10 +17,11 @@
   "resources": [
   ],
   "source-url": "https://github.com/lizmat/Hash-Agnostic.git",
-  "tags": [ "HASH",
+  "tags": [
+    "HASH",
     "UTILS"
   ],
   "test-depends": [
   ],
-  "version": "0.0.17"
+  "version": "0.0.18"
 }
