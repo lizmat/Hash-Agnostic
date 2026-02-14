@@ -4,7 +4,7 @@
   "specVersion": "1.6",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-02-13T18:04:05+00:00",
+    "timestamp": "2026-02-14T19:03:17+00:00",
     "lifecycles": [
       {
         "phase": "pre-build"
@@ -19,7 +19,7 @@
     "component": {
       "type": "library",
       "mime-type": "text/plain",
-      "bom-ref": "pkg:raku/zef:lizmat/Hash::Agnostic@0.0.18",
+      "bom-ref": "pkg:raku/zef:lizmat/Hash::Agnostic@0.0.19",
       "authors": [
         {
           "bom-ref": "ElizabethMattijsen",
@@ -29,7 +29,7 @@
       "publisher": "zef",
       "group": "zef:lizmat",
       "name": "Hash::Agnostic",
-      "version": "0.0.18",
+      "version": "0.0.19",
       "description": "be a hash without knowing how",
       "scope": "required",
       "licenses": [
@@ -41,14 +41,14 @@
           }
         }
       ],
-      "purl": "pkg:raku/zef:lizmat/Hash::Agnostic@0.0.18",
+      "purl": "pkg:raku/zef:lizmat/Hash::Agnostic@0.0.19",
       "externalReferences": [
         {
           "url": "https://github.com/lizmat/Hash-Agnostic",
           "type": "distribution"
         },
         {
-          "url": "https://raku.land/zef:lizmat/Hash::Agnostic?v=0.0.18",
+          "url": "https://raku.land/zef:lizmat/Hash::Agnostic?v=0.0.19",
           "type": "documentation"
         },
         {
@@ -60,8 +60,12 @@
           "type": "license"
         },
         {
-          "url": "https://github.com/lizmat/Hash-Agnostic/archive/refs/tags/0.0.18.zip",
+          "url": "https://github.com/lizmat/Hash-Agnostic/archive/refs/tags/0.0.19.zip",
           "type": "source-distribution"
+        },
+        {
+          "url": "mailto:liz@raku.rocks",
+          "type": "support"
         }
       ],
       "tags": [
@@ -237,7 +241,7 @@
       "type": "distribution"
     },
     {
-      "url": "https://raku.land/zef:lizmat/Hash::Agnostic?v=0.0.18",
+      "url": "https://raku.land/zef:lizmat/Hash::Agnostic?v=0.0.19",
       "type": "documentation"
     },
     {
@@ -249,8 +253,12 @@
       "type": "license"
     },
     {
-      "url": "https://github.com/lizmat/Hash-Agnostic/archive/refs/tags/0.0.18.zip",
+      "url": "https://github.com/lizmat/Hash-Agnostic/archive/refs/tags/0.0.19.zip",
       "type": "source-distribution"
+    },
+    {
+      "url": "mailto:liz@raku.rocks",
+      "type": "support"
     }
   ],
   "dependencies": [
