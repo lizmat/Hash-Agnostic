@@ -39,7 +39,7 @@ Return the value at the given key in the hash. Must return a `Proxy` that will a
 ### method keys
 
 ```raku
-  method keys() { ... }
+method keys() { ... }
 ```
 
 Return the keys that currently exist in the hash, in any order that is most convenient.
@@ -47,9 +47,9 @@ Return the keys that currently exist in the hash, in any order that is most conv
 Optional Methods (provided by role)
 -----------------------------------
 
-You may implement these methods out of performance reasons yourself, but you don't have to as an implementation is provided by this role. They follow the same semantics as the methods on the [Hash object](https://docs.perl6.org/type/Hash).
+You may implement these methods out of performance reasons yourself, but you don't have to as an implementation is provided by this role. They follow the same semantics as the methods on the [Hash object](https://docs.raku.org/type/Hash).
 
-In alphabetical order: `append`, `ASSIGN-KEY`, `elems`, `end`, `gist`, `grab`, `Hash`, `iterator`, `kv`, `list`, `List`, `new`, `pairs`, `perl`, `push`, `Slip`, `STORE`, `Str`, `values`
+Methods in alphabetical order: `append`, `ASSIGN-KEY`, `elems`, `end`, `gist`, `grab`, `Hash`, `iterator`, `kv`, `list`, `List`, `new`, `pairs`, `perl`, `push`, `Slip`, `STORE`, `Str`, `values`
 
 Optional Internal Methods (provided by role)
 --------------------------------------------
@@ -100,7 +100,7 @@ If you like this module, or what I’m doing more generally, committing to a [sm
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright 2018, 2020, 2023, 2024, 2025 Elizabeth Mattijsen
+Copyright 2018, 2020, 2023, 2024, 2025, 2026 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

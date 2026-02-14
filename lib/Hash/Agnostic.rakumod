@@ -1,5 +1,3 @@
-use v6.d;
-
 my class X::Hash::NoImplementation is Exception {
     has $.object;
     has $.method;
@@ -11,14 +9,18 @@ my class X::Hash::NoImplementation is Exception {
     }
 }
 
-role Hash::Agnostic
+role Hash::Agnostic  # UNCOVERABLE
   does Associative  # .AT-KEY and friends
   does Iterable     # .iterator, basically
 {
 
 #--- These methods *MUST* be implemented by the consumer -----------------------
-    method AT-KEY($) is raw { ... }
-    method keys()           { ... }
+    method AT-KEY($) {
+        X::Hash::NoImplementation.new(:object(self), :method<AT-KEY>).throw
+    }
+    method keys() {
+        X::Hash::NoImplementation.new(:object(self), :method<keys>).throw
+    }
 
 #--- Internal Iterator classes that need to be specified here ------------------
     my class KV does Iterator {
@@ -46,7 +48,7 @@ role Hash::Agnostic
     method EXISTS-KEY(::?ROLE:D: $key) { self.AT-KEY($key).defined }
 
     method DELETE-KEY(::?ROLE:D: $) is hidden-from-backtrace {
-        X::Hash::NoImplementation.new(object => self, method => 'DELETE-KEY').throw
+        X::Hash::NoImplementation.new(:object(self), :method<DELETE-KEY>).throw
     }
 
     method CLEAR(::?ROLE:D:) {
@@ -65,7 +67,8 @@ role Hash::Agnostic
     }
 
     method !STORE(@values --> Int:D) {
-        my $last := Mu;
+        my $key;
+        my int $keyseen;
         my int $found;
 
         for @values {
@@ -73,25 +76,26 @@ role Hash::Agnostic
                 self.ASSIGN-KEY(.key, .value);
                 ++$found;
             }
-            elsif $_ ~~ Failure {
+            elsif $_ ~~ Failure {  # UNCOVERABLE
                 .throw
             }
-            elsif !$last =:= Mu {
-                self.ASSIGN-KEY($last, $_);
-                ++$found;
-                $last := Mu;
-            }
-            elsif $_ ~~ Map {
+            elsif $_ ~~ Map {  # UNCOVERABLE
                 $found += self!STORE([.pairs])
             }
+            elsif $keyseen {  # UNCOVERABLE
+                self.ASSIGN-KEY($key, $_);
+                ++$found;  # UNCOVERABLE
+                $keyseen = 0;
+            }
             else {
-                $last := $_;
+                $key := $_;  # UNCOVERABLE
+                $keyseen = 1;
             }
         }
 
-        $last =:= Mu
-          ?? $found
-          !! X::Hash::Store::OddNumber.new(:$found, :$last).throw
+        $keyseen
+          ?? X::Hash::Store::OddNumber.new(:$found, :last($key)).throw
+          !! $found
     }
 
 #--- Hash methods that *MAY* be implemented by the consumer -------------------
@@ -127,9 +131,54 @@ role Hash::Agnostic
     method Array(::?ROLE:D:) { Array.from-iterator(self.iterator) }
     method Hash(::?ROLE:D:)  {  Hash.new(self) }
 
-    method !append(@values) { ... }
     method append(::?ROLE:D: +@values is raw) { self!append(@values) }
     method push(::?ROLE:D:  **@values is raw) { self!append(@values) }
+
+    method !append(@values) {
+        my $key;
+        my int $keyseen;
+        my int $found;
+
+        sub PUSH-KEY($key, $value) {
+            if self.EXISTS-KEY($key) {
+                my $current := self.AT-KEY($key);
+                if $current ~~ Array {
+                    $current.push($value);
+                }
+                else {
+                    self.ASSIGN-KEY($key, [$current, $value])
+                }
+            }
+            else {
+                self.ASSIGN-KEY($key, $value);
+            }
+            ++$found;
+        }
+
+        for @values {
+            if $_ ~~ Pair {
+                PUSH-KEY(.key, .value);
+            }
+            elsif $_ ~~ Failure {  # UNCOVERABLE
+                .throw
+            }
+            elsif $_ ~~ Map {  # UNCOVERABLE
+                $found += self!append([.pairs])
+            }
+            elsif $keyseen {  # UNCOVERABLE
+                PUSH-KEY($key, $_);
+                $keyseen = 0;
+            }
+            else {
+                $key := $_;  # UNCOVERABLE
+                $keyseen = 1;
+            }
+        }
+
+        $keyseen
+          ?? X::Hash::Store::OddNumber.new(:$found, :last($key)).throw
+          !! self
+    }
 
     proto method gist(|) {*}
     multi method gist(::?ROLE:U:) { self.Mu::gist }
@@ -143,7 +192,7 @@ role Hash::Agnostic
         self.pairs.sort( *.key ).join(" ")
     }
 
-    method perl(::?ROLE:) is DEPRECATED("raku") { self.raku }
+    method perl(::?ROLE:) is DEPRECATED("raku") { self.raku }  # UNCOVERABLE
 
     proto method raku(|) {*}
     multi method raku(::?ROLE:U:) { self.^name }

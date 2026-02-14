@@ -7,7 +7,6 @@ Hash::Agnostic - be a hash without knowing how
 =head1 SYNOPSIS
 
 =begin code :lang<raku>
-
 use Hash::Agnostic;
 class MyHash does Hash::Agnostic {
     method AT-KEY($key)          { ... }
@@ -15,7 +14,6 @@ class MyHash does Hash::Agnostic {
 }
 
 my %a is MyHash = a => 42, b => 666;
-
 =end code
 
 =head1 DESCRIPTION
@@ -29,11 +27,9 @@ the C<Hash> functionality while only needing to implement 2 methods:
 =head3 method AT-KEY
 
 =begin code :lang<raku>
-
 method AT-KEY($key) { ... }  # simple case
 
 method AT-KEY($key) { Proxy.new( FETCH => { ... }, STORE => { ... } }
-
 =end code
 
 Return the value at the given key in the hash.  Must return a C<Proxy> that
@@ -43,9 +39,7 @@ in your hash.
 =head3 method keys
 
 =begin code :lang<raku>
-
-  method keys() { ... }
-
+method keys() { ... }
 =end code
 
 Return the keys that currently exist in the hash, in any order that is
@@ -56,9 +50,9 @@ most convenient.
 You may implement these methods out of performance reasons yourself, but you
 don't have to as an implementation is provided by this role.  They follow the
 same semantics as the methods on the
-L<Hash object|https://docs.perl6.org/type/Hash>.
+L<Hash object|https://docs.raku.org/type/Hash>.
 
-In alphabetical order:
+Methods in alphabetical order:
 C<append>, C<ASSIGN-KEY>, C<elems>, C<end>, C<gist>, C<grab>, C<Hash>,
 C<iterator>, C<kv>, C<list>, C<List>, C<new>, C<pairs>, C<perl>, C<push>,
 C<Slip>, C<STORE>, C<Str>, C<values>
@@ -71,9 +65,7 @@ or to provide a given capability.
 =head3 method BIND-KEY
 
 =begin code :lang<raku>
-
 method BIND-KEY($key, $value) { ... }
-
 =end code
 
 Bind the given value to the given key in the hash, and return the value.
@@ -82,9 +74,7 @@ Throws an error if not implemented.
 =head3 method DELETE-KEY
 
 =begin code :lang<raku>
-
 method DELETE-KEY($key) { ... }
-
 =end code
 
 Remove the the given key from the hash and return its value if it existed
@@ -93,9 +83,7 @@ Remove the the given key from the hash and return its value if it existed
 =head3 method EXISTS-KEY
 
 =begin code :lang<raku>
-
 method EXISTS-KEY($key) { ... }
-
 =end code
 
 Return C<Bool> indicating whether the key exists in the hash.  Will call
@@ -104,9 +92,7 @@ C<AT-KEY> and return C<True> if the returned value is defined.
 =head3 method CLEAR
 
 =begin code :lang<raku>
-
 method CLEAR(--> Nil) { ... }
-
 =end code
 
 Reset the array to have no elements at all.  By default implemented by
@@ -126,7 +112,7 @@ deal to me!
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2018, 2020, 2023, 2024, 2025 Elizabeth Mattijsen
+Copyright 2018, 2020, 2023, 2024, 2025, 2026 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

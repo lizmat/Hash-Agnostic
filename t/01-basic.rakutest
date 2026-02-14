@@ -1,4 +1,3 @@
-use v6.c;
 use Test;
 
 use Hash::Agnostic;
@@ -13,7 +12,7 @@ class MyHash does Hash::Agnostic {
     method keys()                       { %!hash.keys                 }
 }
 
-plan 11;
+plan 22;
 
 my @keys   := <a b c d e f g h>;
 my @values := 42, 666, 314, 628, 271, 6, 7, 8;
@@ -24,7 +23,9 @@ my @kv     := (@keys Z @values).flat.List;
 my %h is MyHash = @pairs;
 sub test-basic() {
     subtest {
+        plan 12;
         is %h.elems, +@keys, "did we get {+@keys} elements";
+        is %h.end, @keys - 1, "did we get {@keys - 1} as end";
         is %h.gist,
           '{a => 42, b => 666, c => 314, d => 628, e => 271, f => 6, g => 7, h => 8}',
           'does .gist work ok';
@@ -34,34 +35,47 @@ sub test-basic() {
         is %h.raku,
           'MyHash.new(:a(42),:b(666),:c(314),:d(628),:e(271),:f(6),:g(7),:h(8))',
           'does .raku work ok';
+        is-deeply %h.pairs.Map,     @pairs.Map,      '.pairs produces ok';
+        is-deeply %h.antipairs.Map, @kv.reverse.Map, '.antipairs produces ok';
+        ok %h.list.are(Pair),                        '.list produces ok';
+        ok %h.List.are(Pair),                        '.List produces ok';
+        ok %h.Slip.are(Pair),                        '.Slip produces ok';
+        ok %h.Array.are(Pair),                       '.Array produces ok';
+        is-deeply %h.Hash, %(@pairs),                '.Hash produces ok';
     }, 'test basic stuff after initialization';
 }
 
 test-basic;
 
-subtest {
+subtest 'checking iterator' => {
     plan +@keys;
     my %test = @pairs;
     is %test{.key}, .value, "did iteration {.key} produce %test{.key}"
       for %h;
-}, 'checking iterator';
+}
 
-subtest {
+subtest 'checking {x}', {
     plan +@keys;
     my %test = @pairs;
     is %h{$_}, %test{$_}, "did key $_ produce %test{$_}"
       for @keys;
-}, 'checking {x}';
+}
 
-subtest {
-    plan 4;
+subtest 'deletion of key' => {
+    plan 8;
+
+    is (%h<i> := 137), 137, 'can we bind to "h"';
+    is %h<i>, 137, 'did it get the right value';
+    dies-ok { %h<i> = 666 }, 'cannot assign to bound value';
+    is %h<i>:delete, 137, 'bound value can be deleted';
+
     ok %h<g>:exists, 'does "g" exist';
     is %h<g>:delete, 7, 'does :delete work on "g"';
     nok %h<g>:exists, 'does element no longer exist';
     is %h.elems, @keys - 1, 'do we have one element less now: elems';
-}, 'deletion of key';
+}
 
-subtest {
+subtest 'can we delete a slice' => {
     plan 4;
     is-deeply %h<d e f>:exists, (True,True,True),
       'can we check existence of an existing slice';
@@ -70,28 +84,82 @@ subtest {
     is-deeply %h<d e f>:exists, (False,False,False),
       'can we check existence of an non-existing slice';
     is %h.elems, @keys - 4, 'did we keep update number of elements';
-}, 'can we delete a slice';
+}
 
-subtest {
+subtest 'can we do value slices' => {
     plan 3;
     is-deeply (%h{@keys}:v).sort, (8,42,314,666), 'does a value slice work';
     is-deeply (%h{}:v).sort, (8,42,314,666), 'does a value zen-slice work';
     is-deeply (%h{*}:v).sort, (8,42,314,666), 'does a value whatever-slice work';
-}, 'can we do value slices';
+}
 
-%h = @pairs;
+dies-ok { %h = Failure.new }, 'a Failure as a value will be thrown';
+throws-like { %h = "a" }, X::Hash::Store::OddNumber, :found(0), :last<a>;
+
+lives-ok { %h = @pairs },        'can assign from pairs';
+lives-ok { %h = @kv },           'can assign from key/value';
+lives-ok { %h = $(@pairs.Map) }, 'can assign from a Map';
 test-basic;
 
-subtest {
+subtest 'check iterator based methods' => {
     plan 4;
     is-deeply %h.keys.sort,            @keys, 'does .keys work';
     is-deeply %h.values.sort,        @sorted, 'does .values work';
     is-deeply %h.pairs.sort( *.key ), @pairs, 'does .pairs work';
     is-deeply %h.kv.sort,           @kv.sort, 'does .kv work';
-}, 'check iterator based methods';
+}
 
 is-deeply MyHash.raku, 'MyHash',   'does .raku work on type object';
 quietly is-deeply MyHash.Str, '',  'does .Str  work on type object';
 is-deeply MyHash.gist, '(MyHash)', 'does .gist work on type object';
+
+throws-like {
+    my class NoMethods does Hash::Agnostic { }
+    my % is NoMethods = :42a
+}, X::Hash::NoImplementation,
+  :method<keys>, :message(/ keys /);
+
+throws-like {
+    my class NoAT-KEY does Hash::Agnostic { }
+    my %i is NoAT-KEY;
+    %i<foo>;
+}, X::Hash::NoImplementation,
+  :method<AT-KEY>, :message(/ "AT-KEY" /);
+
+throws-like {
+    my class NoBIND-KEY does Hash::Agnostic { }
+    my %i is NoBIND-KEY;
+    %i<foo> := 42;
+}, X::Hash::NoImplementation,
+  :method<BIND-KEY>, :message(/ "BIND-KEY" /);
+
+throws-like {
+    my class NoDELETE-KEY does Hash::Agnostic { }
+    my %i is NoDELETE-KEY;
+    %i<foo>:delete;
+}, X::Hash::NoImplementation,
+  :method<DELETE-KEY>, :message(/ "DELETE-KEY" /);
+
+subtest 'test whether appends works ok' => {
+    plan 6;
+    is-deeply %h.append("a","foo"), %h, 'does append work and return invocant';
+    is-deeply %h<a>, [42, "foo"], 'did append actually add value';
+
+    is-deeply %h.append("z","foo"), %h, 'does append work and return invocant';
+    is-deeply %h<z>,             "foo", 'does append create key';
+    is-deeply %h.append("z","bar"), %h, 'does append work and return invocant';
+    is-deeply %h<z>,       [<foo bar>], 'does append actually add value';
+}
+
+subtest 'test whether appends works ok' => {
+    plan 6;
+    is-deeply %h.push("b","foo"), %h, 'does push work and return invocant';
+    is-deeply %h<b>, [666, "foo"], 'did push actually add value';
+
+    is-deeply %h.push("y","foo"), %h, 'does push work and return invocant';
+    is-deeply %h<y>, "foo", 'does push create key';
+    is-deeply %h.push("y","bar"), %h, 'does push work and return invocant';
+    is-deeply %h<y>, [<foo bar>], 'does push actually add value';
+}
 
 # vim: expandtab shiftwidth=4

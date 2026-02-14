@@ -10,13 +10,18 @@
   "description": "be a hash without knowing how",
   "license": "Artistic-2.0",
   "name": "Hash::Agnostic",
-  "perl": "6.c",
   "provides": {
     "Hash::Agnostic": "lib/Hash/Agnostic.rakumod"
   },
+  "raku": "6.c",
   "resources": [
   ],
   "source-url": "https://github.com/lizmat/Hash-Agnostic.git",
+  "support": {
+    "bugtracker": "https://github.com/lizmat/Hash-Agnostic/issues",
+    "email": "liz@raku.rocks",
+    "source": "https://github.com/lizmat/Hash-Agnostic.git"
+  },
   "tags": [
     "HASH",
     "UTILS"

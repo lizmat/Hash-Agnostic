@@ -1,6 +1,11 @@
 Revision history for Hash-Agnostic
 
 {{$NEXT}}
+    - Fix issue with default STORE initialization from kv
+    - Add default implementation for .push and .append
+    - Modernize meta
+    - 100% coverage testing
+    - Update copyright year
 
 0.0.18  2026-02-13T19:05:00+01:00
     - Make STORE an only, to make examples in post work.
