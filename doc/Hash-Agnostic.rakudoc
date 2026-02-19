@@ -54,8 +54,8 @@ L<Hash object|https://docs.raku.org/type/Hash>.
 
 Methods in alphabetical order:
 C<append>, C<ASSIGN-KEY>, C<elems>, C<end>, C<gist>, C<grab>, C<Hash>,
-C<iterator>, C<kv>, C<list>, C<List>, C<new>, C<pairs>, C<perl>, C<push>,
-C<Slip>, C<STORE>, C<Str>, C<values>
+C<iterator>, C<kv>, C<list>, C<List>, C<new>, C<pairs>, C<push>,
+C<raku>, C<Slip>, C<STORE>, C<Str>, C<values>
 
 =head2 Optional Internal Methods (provided by role)
 
