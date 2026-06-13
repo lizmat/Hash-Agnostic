@@ -101,7 +101,7 @@ role Hash::Agnostic  # UNCOVERABLE
 #--- Hash methods that *MAY* be implemented by the consumer -------------------
     method new(::?CLASS:U: **@values is raw) {
         my $self := self.bless(|%_);
-        $self.STORE(@values, :initialize) if @values;
+        $self.STORE(@values, :INITIALIZE) if @values;
         $self
     }
     method iterator(::?ROLE:D:) { self.pairs.iterator }

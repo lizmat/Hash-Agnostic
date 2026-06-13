@@ -49,7 +49,7 @@ Optional Methods (provided by role)
 
 You may implement these methods out of performance reasons yourself, but you don't have to as an implementation is provided by this role. They follow the same semantics as the methods on the [Hash object](https://docs.raku.org/type/Hash).
 
-Methods in alphabetical order: `append`, `ASSIGN-KEY`, `elems`, `end`, `gist`, `grab`, `Hash`, `iterator`, `kv`, `list`, `List`, `new`, `pairs`, `perl`, `push`, `Slip`, `STORE`, `Str`, `values`
+Methods in alphabetical order: `append`, `ASSIGN-KEY`, `elems`, `end`, `gist`, `grab`, `Hash`, `iterator`, `kv`, `list`, `List`, `new`, `pairs`, `push`, `raku`, `Slip`, `STORE`, `Str`, `values`
 
 Optional Internal Methods (provided by role)
 --------------------------------------------
@@ -93,7 +93,7 @@ AUTHOR
 
 Elizabeth Mattijsen <liz@raku.rocks>
 
-Source can be located at: https://github.com/lizmat/Hash-Agnostic . Comments and Pull Requests are welcome.
+Source can be located at: https://codeberg.org/lizmat/Hash-Agnostic . Comments and Pull Requests are welcome.
 
 If you like this module, or what I’m doing more generally, committing to a [small sponsorship](https://github.com/sponsors/lizmat/) would mean a great deal to me!
 

@@ -1,6 +1,10 @@
 Revision history for Hash-Agnostic
 
 {{$NEXT}}
+    - Migrated repo to Codeberg
+    - Fix nasty bug in initialization of immutable structures
+      which showed up in Ecosystem, through Map::Match and
+      Map::Agnostic
 
 0.0.19  2026-02-14T20:02:42+01:00
     - Fix issue with default STORE initialization from kv

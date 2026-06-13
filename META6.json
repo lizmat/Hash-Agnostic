@@ -16,15 +16,16 @@
   "raku": "6.c",
   "resources": [
   ],
-  "source-url": "https://github.com/lizmat/Hash-Agnostic.git",
+  "source-url": "https://codeberg.org/lizmat/Hash-Agnostic.git",
   "support": {
-    "bugtracker": "https://github.com/lizmat/Hash-Agnostic/issues",
+    "bugtracker": "https://codeberg.org/lizmat/Hash-Agnostic/issues",
     "email": "liz@raku.rocks",
-    "source": "https://github.com/lizmat/Hash-Agnostic.git"
+    "source": "https://coeberg.org/lizmat/Hash-Agnostic.git"
   },
   "tags": [
     "HASH",
-    "UTILS"
+    "UTILS",
+    "ROLE"
   ],
   "test-depends": [
   ],
