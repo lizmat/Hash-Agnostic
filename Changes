@@ -1,6 +1,8 @@
 Revision history for Hash-Agnostic
 
 {{$NEXT}}
+
+0.0.20  2026-06-13T17:53:38+02:00
     - Migrated repo to Codeberg
     - Fix nasty bug in initialization of immutable structures
       which showed up in Ecosystem, through Map::Match and
